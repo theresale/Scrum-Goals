@@ -3,14 +3,13 @@
 var app = angular.module('myApp', []);
 
 app.controller('registerCtrl', function($scope, $http) {
-
     $scope.addRegistrants = function() {
         $http({
             method: "POST",
             url: "/users",
-            data: {team_name: $scope.newTeamname, password: $scope.newPassword, admin: $scope.admin}
+            data: {username: $scope.newUsername, password: $scope.newPassword, team: null}
         }).then(function successCallback(data) {
-            alert("Thank you for registering your team, please login!");
+            alert("Thank you for registering, please login!");
         },
         function errorCallback(error) {
             return false;
@@ -23,7 +22,7 @@ app.controller('loginCtrl', function($scope, $http) {
         $http({
             method: "GET",
             url: "/users",
-            params: {team_name: $scope.teamname, password: $scope.password}
+            params: {username: $scope.username, password: $scope.password}
         }).then(function successCallback(data) {
             console.log(data);
              // sendData.userID = data.data.rows[0].profile_id;
@@ -37,13 +36,14 @@ app.controller('loginCtrl', function($scope, $http) {
     };
 });
 
-app.controller('memberCtrl', function($scope, $http){
-    $scope.addMember = function() {
+app.controller('teamCtrl', function($scope, $http){
+    $scope.addTeam = function() {
         $http({
-            method: "PUT",
-            url: "/users",
-            data: {team_member: $scope.teammember}
+             method: "POST",
+             url: "/teams",
+             data: {team: $scope.team_name}
         }).then(function successCallback(data){
+        console.log(data);
         },
         function errorCallback(error) {
             console.log(error);

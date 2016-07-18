@@ -15,25 +15,25 @@ module.exports = (function() {
 	
 	var pool = new Pool(config);
 
-	var saveTeam = function(team_name,password,admin,callback) {
+	var saveUser = function(username,password,team_id) {
 		pool.query(
-			"INSERT INTO team" + 
-			" (team_name, password, admin)" +
-			" VALUES ($1, $2, $3) RETURNING *;", [team_name, password, admin], function(error, result) { 
+			"INSERT INTO team_member" + 
+			" (username, password, team_id)" +
+			" VALUES ($1, $2, $3) RETURNING id;", [username, password, team_id], function(error, result) { 
 				if (error) return console.error(error);
 				console.log(result);
-				var profileID = result.rows[0].id;
-				var admin = result.rows[0].admin;
-				callback(admin, profileID);
+				//var profileID = result.rows[0].id;
+				//callback(admin, profileID);
 			}
 		);
 	}
 
-	var readTeam = function(team_name, password) {
+	var readUser = function(username, password,team_id) {
 		pool.query(
-			"SELECT id FROM team"+
-			" WHERE team_name = $1"+
-			" AND password = $2;", [team_name, password], function(error, result) {
+			"SELECT id FROM team_member"+
+			" WHERE username = $1"+
+			" AND password = $2"+
+			" AND team_id = $3;", [username, password, team_id], function(error, result) {
 				if (error) return console.error(error);
 				//var profileID = result.rows[0].id;
 				//callback(profileID, callbackTwo);
@@ -41,14 +41,21 @@ module.exports = (function() {
 		);
 	}
 
-	var firstMember = function(team_member,team_id) {
+	var saveTeam = function(name) {
 		pool.query(
-			"INSERT INTO team_member" +
-			" (team_member, team_id)" + 
-			" VALUES ($1, $2) RETURNING id;", [team_member, team_id], function(error,result) {
+			"INSERT INTO team" +
+			" (name)" + 
+			" VALUES ($1) RETURNING id;", [name], function(error,result) {
 				if (error) return console.error(error);
 			}
 		);
+	}
+
+	var addTask = function(team_member,team_id) {
+		pool.query(
+			"INSERT INTO todo_list" +
+			" "
+		)
 	}
 
 	// var createList = function(item,profile_id) {
@@ -83,9 +90,9 @@ module.exports = (function() {
 	// }
 
 	 return {
-	 	saveTeam: saveTeam,
-	 	firstMember: firstMember,
-	 	readTeam: readTeam
+	 	saveUser: saveUser,
+	 	readUser: readUser,
+	 	saveTeam: saveTeam
 	 };
 })();
 

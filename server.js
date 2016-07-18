@@ -14,11 +14,17 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 })); 
 
 app.post("/users", function(request, response){
- 	databaseManager.saveTeam(request.body.team_name,request.body.password,request.body.admin,databaseManager.firstMember);
+	console.log(request.body);
+ 	databaseManager.saveUser(request.body.username,request.body.password,request.body.team);
  	response.send(request.body);
 });
 
+app.post("/teams", function(request, response){
+	databaseManager.saveTeam(request.body.team);
+	response.send(request.body);
+});
+
 app.get("/users", function(request, response){
-	databaseManager.readTeam(request.query.team_name, request.query.password);
+	databaseManager.readUser(request.query.username, request.query.password);
 	response.send(request.query);
 });
