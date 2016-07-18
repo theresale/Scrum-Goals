@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body ng-app="myApp">
+
+<div ng-controller="registerCtrl">
+<h2>Register</h2>
+    <form ng-submit="addRegistrants()">
+        <input type="text" ng-model="newUsername" size="25" placeholder="Choose Username">
+        <input type="text" ng-model="newPassword" size="25" placeholder="Choose Password">
+        <input type="submit" value="Register">
+    </form>
+</div>
+
+<div ng-controller="loginCtrl">
+<h2>Login</h2>
+    <form ng-submit="verifyUser()">
+        <input type="text" ng-model="username" size="25" placeholder="Username">
+        <input type="text" ng-model="password" size="25" placeholder="Password">
+        <input type="submit" value="Login">
+    </form>
+</div>
+
+<div ng-controller="toBuyCtrl">
+<h2>Scrum Goals</h2>
+    <form ng-submit="toBuyAdd()">
+        <input type="text" ng-model="toBuyInput" size="50" placeholder="Add New">
+        <input type="submit" value="Add New">
+    </form>
+
+<br>
+
+<div ng-repeat="x in toBuyList">
+    <input type="checkbox" ng-model="x.done"> <span ng-bind="x.toBuyText"></span>
+</div>
+
+<p><button ng-click="remove()">Remove marked</button> <button ng-click="saveList()">Save List</button></p>
+</div>
+<script src="app.js"></script>
+
+</body>
+</html>
