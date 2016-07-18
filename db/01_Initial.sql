@@ -5,7 +5,8 @@ DROP TABLE IF EXISTS team_members;
 CREATE TABLE team (
 	id 			serial PRIMARY KEY,
 	team_name 	text,
-	password	text
+	password	text,
+	admin		text
 );
 
 ALTER TABLE team OWNER TO scrum_server;

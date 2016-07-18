@@ -15,14 +15,16 @@ module.exports = (function() {
 	
 	var pool = new Pool(config);
 
-	var saveTeam = function(team_name,password) {
+	var saveTeam = function(team_name,password,admin,callback) {
 		pool.query(
 			"INSERT INTO team" + 
-			" (team_name, password)" +
-			" VALUES ($1, $2) RETURNING id;", [team_name, password], function(error, result) { 
+			" (team_name, password, admin)" +
+			" VALUES ($1, $2, $3) RETURNING *;", [team_name, password, admin], function(error, result) { 
 				if (error) return console.error(error);
-				//var profileID = result.rows[0].id;
-				//callback(["Begin List"], profileID);
+				console.log(result);
+				var profileID = result.rows[0].id;
+				var admin = result.rows[0].admin;
+				callback(admin, profileID);
 			}
 		);
 	}
@@ -39,7 +41,7 @@ module.exports = (function() {
 		);
 	}
 
-	var saveMember = function(team_member,team_id) {
+	var firstMember = function(team_member,team_id) {
 		pool.query(
 			"INSERT INTO team_member" +
 			" (team_member, team_id)" + 
@@ -82,7 +84,7 @@ module.exports = (function() {
 
 	 return {
 	 	saveTeam: saveTeam,
-	 	saveMember: saveMember,
+	 	firstMember: firstMember,
 	 	readTeam: readTeam
 	 };
 })();

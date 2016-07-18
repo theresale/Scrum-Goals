@@ -8,7 +8,7 @@ app.controller('registerCtrl', function($scope, $http) {
         $http({
             method: "POST",
             url: "/users",
-            data: {team_name: $scope.newTeamname, password: $scope.newPassword}
+            data: {team_name: $scope.newTeamname, password: $scope.newPassword, admin: $scope.admin}
         }).then(function successCallback(data) {
             alert("Thank you for registering your team, please login!");
         },
@@ -40,7 +40,7 @@ app.controller('loginCtrl', function($scope, $http) {
 app.controller('memberCtrl', function($scope, $http){
     $scope.addMember = function() {
         $http({
-            method: "POST",
+            method: "PUT",
             url: "/users",
             data: {team_member: $scope.teammember}
         }).then(function successCallback(data){
