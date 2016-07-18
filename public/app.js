@@ -1,9 +1,12 @@
 "use strict";
 
 var app = angular.module('myApp', []);
-app.controller('toBuyCtrl', function($scope, $http, sendData) {
+app.controller('toBuyCtrl', function($scope, $http, sendData, displayService) {
     $scope.toBuyList = [];
     $scope.toBuyItems = [];
+    $scope.showList = function(){
+        return displayService.showList;
+    };
 
     $scope.toBuyAdd = function() {
         $scope.toBuyList.push({toBuyText:$scope.toBuyInput, done:false});
@@ -45,14 +48,19 @@ app.controller('toBuyCtrl', function($scope, $http, sendData) {
     };
 });
 
-app.controller('registerCtrl', function($scope, $http) {
+app.controller('registerCtrl', function($scope, $http, displayService) {
+    $scope.showRegister = function(){
+        return displayService.showRegister;
+    };
+
     $scope.addRegistrants = function() {
         $http({
             method: "POST",
             url: "/users",
-            data: {username: $scope.newUsername, password: $scope.newPassword}
+            data: {team_name: $scope.newTeamname, password: $scope.newPassword}
         }).then(function successCallback(data) {
-            return true;
+            alert("Thank you for registering your team, please login!");
+            displayService.showRegister = false;
         },
         function errorCallback(error) {
             return false;
@@ -60,7 +68,11 @@ app.controller('registerCtrl', function($scope, $http) {
     };
 });
 
-app.controller('loginCtrl', function($scope, $http, sendData, $rootScope) {
+app.controller('loginCtrl', function($scope, $http, sendData, $rootScope, displayService) {
+    $scope.showLogin = function(){
+        return displayService.showLogin;
+    };
+
     $scope.verifyUser = function() {
         $http({
             method: "GET",
@@ -71,6 +83,9 @@ app.controller('loginCtrl', function($scope, $http, sendData, $rootScope) {
              sendData.userList = data.data.rows[0].item;
              console.log(sendData.userID);
              $rootScope.$broadcast('shoppingListReceived');
+             displayService.showRegister = false;
+             displayService.showList = true;
+             displayService.showLogin = false;
         },
         function errorCallback(error) {
             console.log(error);
@@ -83,5 +98,11 @@ app.service('sendData', function(){
     this.userList = [];
 
 });
+
+app.service('displayService', function(){
+    this.showLogin = true;
+    this.showRegister = true;
+    this.showList = false;
+})
 
 

@@ -1,0 +1,15 @@
+h1 {
+	text-align: center;
+}
+
+.page-header {
+	padding: 30px;
+	margin-bottom: 50px;
+	background: #990000;
+	color: white;
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.lead {
+	padding: 25px;
+}
