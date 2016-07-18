@@ -13,17 +13,18 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 })); 
 
- app.post("/users", function(request, response){
+app.post("/users", function(request, response){
  	databaseManager.saveTeam(request.body.team_name,request.body.password);
+ 	response.send(request.body);
+});
+
+app.post("/users", function(request, response){
+	console.log(request);
+ 	databaseManager.saveMember(request.body.team_member);
  	response.send(request.body);
  });
 
-// app.get("/users", function(request, response){
-// 	databaseManager.readProfile(request.query.username, request.query.password, databaseManager.readList,function(data){
-// 		response.send(JSON.stringify(data));
-// 	});
-// });
-
-// app.put("/users", function(request, response){
-// 	databaseManager.updateList(request.body.item, request.body.id);
-// })
+app.get("/users", function(request, response){
+	databaseManager.readTeam(request.query.team_name, request.query.password);
+	response.send(request);
+});

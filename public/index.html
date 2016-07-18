@@ -19,7 +19,7 @@
 
 <div class="container">
 
-    <div class="row" ng-controller="registerCtrl" ng-show="showRegister()">
+    <div class="row" ng-controller="registerCtrl">
         <div class="col-sm-offset-3 col-sm-6">
             <h3>Register Your Team</h3>
             <form class="form-inline" ng-submit="addRegistrants()">
@@ -30,12 +30,12 @@
         </div>
     </div>
 
-    <div class="row" ng-controller="loginCtrl" ng-show="showLogin()">
+    <div class="row" ng-controller="loginCtrl">
         <div class="col-sm-offset-3 col-sm-6">
             <h3>Login</h3>
             <div class="form-group">
             <form class="form-inline" ng-submit="verifyUser()">
-                <input class="form-control" type="text" ng-model="username" placeholder="Username">
+                <input class="form-control" type="text" ng-model="teamname" placeholder="Team Name">
                 <input class="form-control" type="text" ng-model="password" placeholder="Password">
                 <input class="btn btn-default" type="submit" value="Login">
             </form>
@@ -43,27 +43,39 @@
         </div>
     </div>
 
-    <div class="row" ng-controller="toBuyCtrl" ng-show="showList()">
+    <div class="row" ng-controller="memberCtrl">
         <div class="col-sm-offset-3 col-sm-6">
-            <h3>Your Shopping List</h3>
-                <form ng-submit="toBuyAdd()">
+            <h5>Team Members</h5>
+            <div class="form-group">
+            <form class="form-inline" ng-submit="addMember()">
+                <input class="form-control" type="text" ng-model="team_member" placeholder="Name">
+                <input class="btn btn-default" type="submit" value="Add Team Member">
+            </form>
+            </div>
+        </div>
+    </div>
+
+  <!--  <div class="row" ng-controller="taskCtrl">
+        <div class="col-sm-offset-3 col-sm-6">
+            <h3>Your Tasks</h3>
+                <form ng-submit="taskAdd()">
                 <div class="input-group">
-                    <input class="form-control" type="text" ng-model="toBuyInput" size="50" placeholder="Add New">
+                    <input class="form-control" type="text" ng-model="taskInput" size="50" placeholder="Add New">
                     <span class="input-group-btn">
                     <input class="btn btn-default" type="submit" value="Add New">
                     </span>
                 </div>
                 </form>
 
-            <div ng-repeat="x in toBuyList">
+            <div ng-repeat="x in taskList">
             <br>
-            <input type="checkbox" ng-model="x.done"><span class="lead" ng-bind="x.toBuyText"></span>
+            <input type="checkbox" ng-model="x.done"><span class="lead" ng-bind="x.taskText"></span>
             </div>
             <br>
             <p><button class="btn btn-default" ng-click="remove()">Remove marked</button> 
             <button class="btn btn-default" ng-click="saveList()">Save List</button></p>
         </div>
-    </div>
+    </div>-->
 </div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>

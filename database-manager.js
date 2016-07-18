@@ -27,6 +27,28 @@ module.exports = (function() {
 		);
 	}
 
+	var readTeam = function(team_name, password) {
+		pool.query(
+			"SELECT id FROM team"+
+			" WHERE team_name = $1"+
+			" AND password = $2;", [team_name, password], function(error, result) {
+				if (error) return console.error(error);
+				//var profileID = result.rows[0].id;
+				//callback(profileID, callbackTwo);
+			}
+		);
+	}
+
+	var saveMember = function(team_member,team_id) {
+		pool.query(
+			"INSERT INTO team_member" +
+			" (team_member, team_id)" + 
+			" VALUES ($1, $2) RETURNING id;", [team_member, team_id], function(error,result) {
+				if (error) return console.error(error);
+			}
+		);
+	}
+
 	// var createList = function(item,profile_id) {
 	// 	pool.query(
 	// 		"INSERT INTO grocery_list" +
@@ -48,19 +70,6 @@ module.exports = (function() {
 	// 	);
 	// }
 
-	// var readProfile = function(username, password, callback, callbackTwo) {
-	// 	console.log(username, password)
-	// 	pool.query(
-	// 		"SELECT id FROM profile"+
-	// 		" WHERE username = $1"+
-	// 		" AND password = $2;", [username, password], function(error, result) {
-	// 			if (error) return console.error(error);
-	// 			var profileID = result.rows[0].id;
-	// 			callback(profileID, callbackTwo);
-	// 		}
-	// 	);
-	// }
-
 	// var readList = function(profile_id,callback) {
 	// 	pool.query(
 	// 		"SELECT * FROM grocery_list"+
@@ -73,10 +82,8 @@ module.exports = (function() {
 
 	 return {
 	 	saveTeam: saveTeam,
-	// 	createList: createList,
-	// 	readProfile: readProfile,
-	// 	readList: readList,
-	// 	updateList: updateList
+	 	saveMember: saveMember,
+	 	readTeam: readTeam
 	 };
 })();
 
