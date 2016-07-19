@@ -51,12 +51,16 @@ module.exports = (function() {
 		);
 	}
 
-	var addTask = function(team_member,team_id) {
+	var readTeam = function(callback) {
 		pool.query(
-			"INSERT INTO todo_list" +
-			" "
-		)
+			"SELECT * FROM team;", function(error, result) {
+				if (error) return console.error(error);
+				callback(result);
+			}
+		);
 	}
+
+
 
 	// var createList = function(item,profile_id) {
 	// 	pool.query(
@@ -92,7 +96,8 @@ module.exports = (function() {
 	 return {
 	 	saveUser: saveUser,
 	 	readUser: readUser,
-	 	saveTeam: saveTeam
+	 	saveTeam: saveTeam,
+	 	readTeam: readTeam
 	 };
 })();
 

@@ -14,7 +14,6 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 })); 
 
 app.post("/users", function(request, response){
-	console.log(request.body);
  	databaseManager.saveUser(request.body.username,request.body.password,request.body.team);
  	response.send(request.body);
 });
@@ -28,3 +27,11 @@ app.get("/users", function(request, response){
 	databaseManager.readUser(request.query.username, request.query.password);
 	response.send(request.query);
 });
+
+app.get("/teams", function(request, response){
+	 databaseManager.readTeam(function(result){
+	 	return response.send(result);
+	 });
+});
+
+

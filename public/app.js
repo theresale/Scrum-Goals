@@ -36,6 +36,24 @@ app.controller('loginCtrl', function($scope, $http) {
     };
 });
 
+app.controller('teamListCtrl', function($scope, $http){
+    $scope.getTeams = function() {
+        $scope.teamArray = [];
+        $http({
+            method: "GET",
+            url: "/teams",
+        }).then(function successCallback(data){
+            for(var i=0; i<data.data.rows.length; i++) {
+                $scope.teamArray.push(data.data.rows[i]);
+            };
+            console.log($scope.teamArray);
+        },
+        function errorCallback(error) {
+            console.log(error);
+        });
+    };
+});
+
 app.controller('teamCtrl', function($scope, $http){
     $scope.addTeam = function() {
         $http({
@@ -43,7 +61,7 @@ app.controller('teamCtrl', function($scope, $http){
              url: "/teams",
              data: {team: $scope.team_name}
         }).then(function successCallback(data){
-        console.log(data);
+            console.log(data);
         },
         function errorCallback(error) {
             console.log(error);
