@@ -30,6 +30,31 @@
         </div>
     </div>
 
+    <div class="row" ng-controller="teamCtrl">
+        <div class="col-sm-offset-3 col-sm-6">
+            <label>Create a new team:</label>
+            <div class="form-group">
+            <form class="form-inline" ng-submit="addTeam()">
+                <input class="form-control" type="text" ng-model="team_name" placeholder="Team Name">
+                <input class="btn btn-default" type="submit" value="Create New Team">
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-controller="teamListCtrl">
+            <div class="col-sm-offset-3 col-sm-6"> 
+            <button ng-click="getTeams()" class="btn btn-default">1. Refresh Teams</button>
+                <select name="chosenTeam" id="chosenTeam" ng-model="chosenTeam">
+                    <option value="">2. CHOOSE A TEAM</option>
+                    <option ng-repeat="team in teamArray" value="{{team.id}}">{{team.name}}</option>
+                </select>  
+            <button ng-click="joinTeam()" class="btn btn-default">3. Join Team</button>  
+            </div>
+    </div>
+
+    <hr>
+
     <div class="row" ng-controller="loginCtrl">
         <div class="col-sm-offset-3 col-sm-6">
             <h3>Login</h3>
@@ -43,28 +68,6 @@
         </div>
     </div>
 
-    <div class="row" ng-controller="teamListCtrl">
-            <div class="col-sm-offset-3 col-sm-6"> 
-                <label>Join an existing team: </label>
-                <select>
-                    <option value="">--CHOOSE A TEAM--</option>
-                    <option ng-repeat="team in teamArray">{{team.name}}</option>
-                </select>
-                <button ng-click="getTeams()">Refresh Teams</button>
-            </div>
-    </div>
-
-    <div class="row" ng-controller="teamCtrl">
-        <div class="col-sm-offset-3 col-sm-6">
-        <label>Create a new team:</label>
-            <div class="form-group">
-            <form class="form-inline" ng-submit="addTeam()">
-                <input class="form-control" type="text" ng-model="team_name" placeholder="Team Name">
-                <input class="btn btn-default" type="submit" value="Create New Team">
-            </form>
-            </div>
-        </div>
-    </div>
 
   <!--  <div class="row" ng-controller="taskCtrl">
         <div class="col-sm-offset-3 col-sm-6">

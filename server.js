@@ -14,8 +14,9 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 })); 
 
 app.post("/users", function(request, response){
- 	databaseManager.saveUser(request.body.username,request.body.password,request.body.team);
- 	response.send(request.body);
+ 	databaseManager.saveUser(request.body.username,request.body.password,request.body.team, function(result){
+ 		return response.send(result);
+ 	});
 });
 
 app.post("/teams", function(request, response){
@@ -25,13 +26,16 @@ app.post("/teams", function(request, response){
 
 app.get("/users", function(request, response){
 	databaseManager.readUser(request.query.username, request.query.password);
-	response.send(request.query);
 });
 
 app.get("/teams", function(request, response){
-	 databaseManager.readTeam(function(result){
+	 databaseManager.readAllTeams(function(result){
 	 	return response.send(result);
 	 });
+});
+
+app.put("/users", function(request,response){
+	databaseManager.updateTeamId(request.body.team_id, request.body.id);
 });
 
 

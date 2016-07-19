@@ -2,54 +2,18 @@
 
 var app = angular.module('myApp', []);
 
-app.controller('registerCtrl', function($scope, $http) {
+app.controller('registerCtrl', function($scope, $http, sendData) {
     $scope.addRegistrants = function() {
         $http({
             method: "POST",
             url: "/users",
             data: {username: $scope.newUsername, password: $scope.newPassword, team: null}
         }).then(function successCallback(data) {
+            sendData.userID = data.data.rows[0].id;
             alert("Thank you for registering, please login!");
         },
         function errorCallback(error) {
             return false;
-        });
-    };
-});
-
-app.controller('loginCtrl', function($scope, $http) {
-    $scope.verifyUser = function() {
-        $http({
-            method: "GET",
-            url: "/users",
-            params: {username: $scope.username, password: $scope.password}
-        }).then(function successCallback(data) {
-            console.log(data);
-             // sendData.userID = data.data.rows[0].profile_id;
-             // sendData.userList = data.data.rows[0].item;
-             // console.log(sendData.userID);
-             // $rootScope.$broadcast('shoppingListReceived');
-        },
-        function errorCallback(error) {
-            console.log(error);
-        });
-    };
-});
-
-app.controller('teamListCtrl', function($scope, $http){
-    $scope.getTeams = function() {
-        $scope.teamArray = [];
-        $http({
-            method: "GET",
-            url: "/teams",
-        }).then(function successCallback(data){
-            for(var i=0; i<data.data.rows.length; i++) {
-                $scope.teamArray.push(data.data.rows[i]);
-            };
-            console.log($scope.teamArray);
-        },
-        function errorCallback(error) {
-            console.log(error);
         });
     };
 });
@@ -67,6 +31,61 @@ app.controller('teamCtrl', function($scope, $http){
             console.log(error);
         });
     };
+});
+
+app.controller('teamListCtrl', function($scope, $http, sendData){
+    $scope.chosenTeam = "";
+
+    $scope.getTeams = function() {
+        $scope.teamArray = [];
+        $http({
+            method: "GET",
+            url: "/teams",
+        }).then(function successCallback(data){
+            for(var i=0; i<data.data.rows.length; i++) {
+                $scope.teamArray.push(data.data.rows[i]);
+            };
+        },
+        function errorCallback(error) {
+            console.log(error);
+        });
+    };
+
+    $scope.joinTeam = function(){
+        $http({
+            method: "PUT",
+            url: "/users",
+            data: {team_id: $scope.chosenTeam, id: sendData.userID}
+        }).then(function successCallback(data){
+            console.log(data);
+        },
+        function errorCallback(error) {
+            console.log(error);
+        });
+    };
+});
+
+app.controller('loginCtrl', function($scope, $http) {
+    $scope.verifyUser = function() {
+        $http({
+            method: "GET",
+            url: "/users",
+            params: {username: $scope.username, password: $scope.password}
+        }).then(function successCallback(data) {
+            //sendData.userID = data.data.rows[0].team_member_id;
+            //sendData.userList = data.data.rows[0].item;
+             // console.log(sendData.userID);
+             // $rootScope.$broadcast('shoppingListReceived');
+        },
+        function errorCallback(error) {
+            console.log(error);
+        });
+    };
+});
+
+app.service('sendData', function(){
+    this.userID = 0;
+    this.chosenTeam;
 });
 
 // app.controller('taskCtrl', function($scope, $http, sendData) {

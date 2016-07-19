@@ -15,28 +15,25 @@ module.exports = (function() {
 	
 	var pool = new Pool(config);
 
-	var saveUser = function(username,password,team_id) {
+	var saveUser = function(username,password,team_id,callback) {
 		pool.query(
 			"INSERT INTO team_member" + 
 			" (username, password, team_id)" +
 			" VALUES ($1, $2, $3) RETURNING id;", [username, password, team_id], function(error, result) { 
 				if (error) return console.error(error);
-				console.log(result);
+				callback(result);
 				//var profileID = result.rows[0].id;
 				//callback(admin, profileID);
 			}
 		);
 	}
 
-	var readUser = function(username, password,team_id) {
+	var readUser = function(username, password) {
 		pool.query(
 			"SELECT id FROM team_member"+
 			" WHERE username = $1"+
-			" AND password = $2"+
-			" AND team_id = $3;", [username, password, team_id], function(error, result) {
+			" AND password = $2;", [username, password], function(error, result) {
 				if (error) return console.error(error);
-				//var profileID = result.rows[0].id;
-				//callback(profileID, callbackTwo);
 			}
 		);
 	}
@@ -51,7 +48,17 @@ module.exports = (function() {
 		);
 	}
 
-	var readTeam = function(callback) {
+	var readTeam = function(username,password) {
+		pool.query(
+			"SELECT id FROM team_member"+
+			" WHERE username = $1"+
+			" AND password = $2;", [username, password], function(error,result){
+				if (error) return console.error(error);
+			}
+		);
+	}
+
+	var readAllTeams = function(callback) {
 		pool.query(
 			"SELECT * FROM team;", function(error, result) {
 				if (error) return console.error(error);
@@ -60,6 +67,15 @@ module.exports = (function() {
 		);
 	}
 
+	var updateTeamId = function(team_id,id) {
+		pool.query(
+			"UPDATE team_member"+
+			" SET team_id=$1"+
+			" WHERE id=$2", [team_id, id], function(error,result) {
+				if (error) return console.error(error);
+			}
+		);
+	} 
 
 
 	// var createList = function(item,profile_id) {
@@ -97,7 +113,10 @@ module.exports = (function() {
 	 	saveUser: saveUser,
 	 	readUser: readUser,
 	 	saveTeam: saveTeam,
-	 	readTeam: readTeam
+	 	readTeam: readTeam,
+	 	readAllTeams: readAllTeams,
+	 	updateTeamId: updateTeamId
+	 	// updateTeamId: updateTeamId
 	 };
 })();
 
