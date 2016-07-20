@@ -97,6 +97,7 @@ app.controller('loginCtrl', function($scope, $http, sendData, displayService) {
             displayService.showLogin = false;
             displayService.showUser = true;
             displayService.showRegister = false;
+            displayService.showTeamButton = true;
             sendData.userTeamId = data.data.rows[0].team_id;
             //sendData.userID = data.data.rows[0].team_member_id;
             //sendData.userList = data.data.rows[0].item;
@@ -111,23 +112,41 @@ app.controller('loginCtrl', function($scope, $http, sendData, displayService) {
 
 app.controller('getUserTeamCtrl', function($scope, $http, sendData, displayService) {
     $scope.showUser = function() {
+        $scope.getYourTeam;
         return displayService.showUser;
     };
+
+    $scope.showTeamButton = function() {
+        return displayService.showTeamButton;
+    };
+    
+    $scope.showTeam = function() {
+        return displayService.showTeam;
+    };
+
+    $scope.teamName = "Welcome to Your Homebase";
+    $scope.teamMembers = [];
 
     $scope.getYourTeam = function() {
         $http({
             method: "GET",
             url: "/yourteam",
-            params: {id: sendData.userTeamId, name: name}
+            params: {id: sendData.userTeamId}
         }).then(function successCallback(data){
-            sendData.userTeamName = data.data.rows[0].name;
-            console.log(sendData.userTeamName);
+            displayService.showTeam = true;
+            displayService.showTeamButton = false;
+            $scope.teamMembers = data.data.data[1].rows.map(function(obj){
+                return {id: obj.id, username: obj.username};
+            });
+            $scope.teamName = data.data.data[0].rows[0].name;
         },
         function errorCallback(error) {
             console.log(error);
-        });
+        }); 
     };
 });
+
+
 
 app.service('sendData', function(){
     this.userID = 0;
@@ -142,50 +161,8 @@ app.service('displayService', function(){
     this.showCreateTeam = false;
     this.showTeams = false;
     this.showUser = false;
+    this.showTeamButton = false;
+    this.showTeam = false;
 });
-
-// app.controller('taskCtrl', function($scope, $http, sendData) {
-//     $scope.todoList = [];
-//     $scope.todoItems = [];
-
-//     $scope.toBuyAdd = function() {
-//         $scope.todoList.push({todoText:$scope.todoInput, done:false});
-//         $scope.todoItems.push($scope.todoInput);
-//         $scope.todoInput = "";
-//     };
-
-//     $scope.remove = function() {
-//         var oldList = $scope.todoList;
-//         $scope.todoList = [];
-//         $scope.todoItems = [];
-//         angular.forEach(oldList, function(x) {
-//             if (!x.done) {
-//                 $scope.todoItems.push(x.todoText);
-//                 $scope.todoList.push(x);
-//             }
-//         });
-//     };
-
-//     $scope.$on('shoppingListReceived', function() {
-//         var array = sendData.userList;
-//         for(var i=0; i<array.length; i++){
-//         $scope.todoList.push({toBuyText:array[i], done:false});
-//         $scope.todoItems.push(array[i]);
-//         }
-//     });
-
-//     $scope.saveList = function() {
-//         $http({
-//             method: "PUT",
-//             url: "/users",
-//             data: {item: $scope.todoItems, id: sendData.userID}
-//         }).then(function successCallback(data) {
-//             console.log("");
-//         },
-//         function errorCallback(error) {
-//             console.log(error);
-//         });
-//     };
-// });
 
 

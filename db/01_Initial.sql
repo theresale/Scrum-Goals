@@ -24,15 +24,11 @@ ALTER TABLE team_member OWNER TO scrum_server;
 CREATE TABLE todo_list (
 	id 				serial PRIMARY KEY,
 	task			text,
-	team_id 		integer,	
+	status  		text,	
 	team_member_id 	integer,
 		CONSTRAINT fk_todo_list_to_team_member
 		FOREIGN KEY (team_member_id)
-		REFERENCES team_member (id),
-
-		CONSTRAINT fk_todo_list_to_team
-		FOREIGN KEY (team_id)
-		REFERENCES team (id)  
+		REFERENCES team_member (id)
 );
 
 ALTER TABLE todo_list OWNER TO scrum_server;

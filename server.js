@@ -44,8 +44,14 @@ app.put("/users", function(request,response){
 });
 
 app.get("/yourteam", function(request, response){
+	var retObj = {data: []};
 	databaseManager.readYourTeam(request.query.id, function(result){
-	 	return response.send(result);
+	 	retObj.data.push(result);
+	});
+	databaseManager.readTeamMembers(request.query.id, function(result){
+		retObj.data.push(result);
+		return response.send(retObj);
 	});
 });
+
 

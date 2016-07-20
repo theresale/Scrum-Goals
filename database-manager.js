@@ -51,7 +51,7 @@ module.exports = (function() {
 	var readYourTeam = function(id,callback) {
 		pool.query(
 			"SELECT name FROM team"+
-			" WHERE id = $1;", [id], function(error,result){
+			" WHERE id = $1;", [id], function(error,result) {
 				if (error) return console.error(error);
 				callback(result);
 			}
@@ -77,6 +77,16 @@ module.exports = (function() {
 			}
 		);
 	} 
+
+	var readTeamMembers = function(team_id,callback){
+		pool.query(
+			"SELECT username, id FROM team_member"+
+			" WHERE team_id=$1;", [team_id], function(error,result){
+				if (error) return console.error(error);
+				callback(result);
+			}
+		);
+	}
 
 
 	// var createList = function(item,profile_id) {
@@ -116,7 +126,8 @@ module.exports = (function() {
 	 	saveTeam: saveTeam,
 	 	readYourTeam: readYourTeam,
 	 	readAllTeams: readAllTeams,
-	 	updateTeamId: updateTeamId
+	 	updateTeamId: updateTeamId,
+	 	readTeamMembers: readTeamMembers
 	 };
 })();
 
