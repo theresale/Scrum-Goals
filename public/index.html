@@ -19,18 +19,20 @@
 
 <div class="container">
 
-    <div class="row" ng-controller="registerCtrl">
+    <div class="row" ng-controller="registerCtrl" ng-show="showRegister()">
         <div class="col-sm-offset-3 col-sm-6">
             <h3>Register</h3>
             <form class="form-inline" ng-submit="addRegistrants()">
                 <input class="form-control" type="text" ng-model="newUsername" placeholder="Choose Username">
                 <input class="form-control" type="text" ng-model="newPassword" placeholder="Choose Password">
                 <input class="btn btn btn-default" type="submit" value="Register">
-            </form>         
+            </form>  
+            <br><br>
+            <hr>       
         </div>
     </div>
 
-    <div class="row" ng-controller="teamCtrl">
+    <div class="row" ng-controller="teamCtrl" ng-show="showCreateTeam()">
         <div class="col-sm-offset-3 col-sm-6">
             <label>Create a new team:</label>
             <div class="form-group">
@@ -42,7 +44,7 @@
         </div>
     </div>
 
-    <div class="row" ng-controller="teamListCtrl">
+    <div class="row" ng-controller="teamListCtrl" ng-show="showTeams()">
             <div class="col-sm-offset-3 col-sm-6"> 
             <button ng-click="getTeams()" class="btn btn-default">1. Refresh Teams</button>
                 <select name="chosenTeam" id="chosenTeam" ng-model="chosenTeam">
@@ -53,9 +55,7 @@
             </div>
     </div>
 
-    <hr>
-
-    <div class="row" ng-controller="loginCtrl">
+    <div class="row" ng-controller="loginCtrl" ng-show="showLogin()">
         <div class="col-sm-offset-3 col-sm-6">
             <h3>Login</h3>
             <div class="form-group">
@@ -68,6 +68,13 @@
         </div>
     </div>
 
+    <div class="row" ng-controller="getUserTeamCtrl" ng-show="showUser()">
+        <div class="col-sm-offset-3 col-sm-6">
+            <h3>Welcome to Your Homebase</h3>
+            <button ng-click="getYourTeam()" class="btn btn-default">Your Team</button>
+<!--             <h1 ng-model="teamName">{{teamName}}</h1>
+ -->        </div>
+    </div>
 
   <!--  <div class="row" ng-controller="taskCtrl">
         <div class="col-sm-offset-3 col-sm-6">

@@ -20,12 +20,15 @@ app.post("/users", function(request, response){
 });
 
 app.post("/teams", function(request, response){
-	databaseManager.saveTeam(request.body.team);
-	response.send(request.body);
+	databaseManager.saveTeam(request.body.team, function(result){
+		return response.send(result);
+	});
 });
 
 app.get("/users", function(request, response){
-	databaseManager.readUser(request.query.username, request.query.password);
+	databaseManager.readUser(request.query.username, request.query.password, function(result){
+		return response.send(result);
+	});
 });
 
 app.get("/teams", function(request, response){
@@ -35,7 +38,14 @@ app.get("/teams", function(request, response){
 });
 
 app.put("/users", function(request,response){
-	databaseManager.updateTeamId(request.body.team_id, request.body.id);
+	databaseManager.updateTeamId(request.body.team_id, request.body.id, function(result){
+		return response.send(result);
+	});
 });
 
+app.get("/yourteam", function(request, response){
+	databaseManager.readYourTeam(request.query.id, function(result){
+	 	return response.send(result);
+	});
+});
 
