@@ -93,18 +93,20 @@
             <h3>Team Tasks</h3>
             <table class="table table-striped">
                 <tr>
-                    <th>Task</th><th>Assigned To</th><th>Done</th></tr>
+                    <th>Task</th><th>Assigned To</th><th></th></tr>
                 <tr ng-repeat="task in tasksArray | orderBy : 'team_member_id'">
-                    <td>{{task.task}}</td><td>{{task.team_member_id}}</td><td></td></tr>
+                    <td>{{task.task}}</td>
+                    <td>{{task.team_member_id}}</td>
+                    <td><input type="checkbox" ng-model="x.done"></td></tr>
             </table>
-            <button ng-click="getYourTasks()" class="btn btn-default">Update Tasks</button>   
+            <button ng-click="getYourTasks()" class="btn btn-default">Update Tasks</button> 
+            <button ng-click="removeTasks()" class="btn btn-default">Delete Tasks</button>   
         </div>
     </div>       
 </div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 <script src="app.js"></script>
-
 
 </body>
 </html>

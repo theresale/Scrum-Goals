@@ -168,11 +168,26 @@ app.controller('tasksCtrl', function($http, $scope, sendData, $rootScope, displa
             params: {team_id: sendData.userTeamId}
         }).then(function successCallback(data){
             $scope.tasksArray = data.data.rows;
-            console.log($scope.tasksArray);
-
         },
         function errorCallback(error) {
             console.log(error);
+        });
+    };
+
+    $scope.removeTasks = function() {
+        angular.forEach($scope.task, function(x) {
+            if (x.done) {
+                $http({
+                    method:"DELETE",
+                    url: "/tasks",
+                    params: {id: $scope.task.id}
+                }).then(function successCallback(data){
+                    $scope.getYourTasks();
+                },
+                function errorCallback(error){
+                    console.log(error);
+                });
+            };
         });
     };
 });

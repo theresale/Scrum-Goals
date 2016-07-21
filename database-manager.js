@@ -109,16 +109,15 @@ module.exports = (function() {
 		);
 	}
 
-	// var updateTasks = function(task, team_member_id, team_id, task_id, callback){
-	// 	pool.query(
-	// 		"UPDATE todo_list"+
-	// 		" SET task = $1, team_member_id = $2, team_id = $3"+
-	// 		" WHERE task_id = $4;", [task, team_member_id, team_id, task_id, callback], function(error,result){
-	// 			if (error) return console.error(error);
-	// 			callback(result);	
-	// 		}
-	// 	);
-	//}
+	var deleteTask = function(task_id, callback){
+		pool.query(
+			"DELETE todo_list"+
+			" WHERE task_id = $1;", [task_id], function(error,result){
+				if (error) return console.error(error);
+				callback(result);	
+			}
+		);
+	}
 
 	 return {
 	 	saveUser: saveUser,
@@ -129,8 +128,8 @@ module.exports = (function() {
 	 	updateTeamId: updateTeamId,
 	 	readTeamMembers: readTeamMembers,
 	 	saveTask: saveTask,
-	 	readTasks: readTasks
-	 	// updateTasks: updateTasks
+	 	readTasks: readTasks,
+	 	deleteTask: deleteTask
 	 };
 })();
 

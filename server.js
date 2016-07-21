@@ -67,10 +67,10 @@ app.get("/tasks", function(request, response){
 	});
 });
 
-// app.put("/users", function(request,response){
-// 	databaseManager.updateTasks(request.body.task, request.body.team_member_id, request.body.team_id, request.body.task_id, function(result){
-// 		return response.send(result);
-// 	});
-// });
+app.delete("/tasks", function(request,response){
+	databaseManager.deleteTask(request.query.task_id, function(result){
+		return response.send(result);
+	});
+});
 
 
