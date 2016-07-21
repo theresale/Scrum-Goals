@@ -8,7 +8,7 @@ app.controller('registerCtrl', function($scope, $http, sendData, displayService)
     };
 
     $scope.addRegistrants = function() {
-        $http({
+            $http({
             method: "POST",
             url: "/users",
             data: {username: $scope.newUsername, password: $scope.newPassword, team: null}
@@ -99,10 +99,7 @@ app.controller('loginCtrl', function($scope, $http, sendData, displayService) {
             displayService.showRegister = false;
             displayService.showTeamButton = true;
             sendData.userTeamId = data.data.rows[0].team_id;
-            //sendData.userID = data.data.rows[0].team_member_id;
-            //sendData.userList = data.data.rows[0].item;
-             // console.log(sendData.userID);
-             // $rootScope.$broadcast('shoppingListReceived');
+            sendData.userId = data.data.rows[0].id;
         },
         function errorCallback(error) {
             console.log(error);
@@ -120,12 +117,11 @@ app.controller('getUserTeamCtrl', function($scope, $http, sendData, displayServi
         return displayService.showTeamButton;
     };
     
-    $scope.showTeam = function() {
-        return displayService.showTeam;
+    $scope.showTeamList = function() {
+        return displayService.showTeamList;
     };
 
     $scope.teamName = "Welcome to Your Homebase";
-    $scope.teamMembers = [];
 
     $scope.getYourTeam = function() {
         $http({
@@ -133,7 +129,8 @@ app.controller('getUserTeamCtrl', function($scope, $http, sendData, displayServi
             url: "/yourteam",
             params: {id: sendData.userTeamId}
         }).then(function successCallback(data){
-            displayService.showTeam = true;
+            displayService.showTasks = true;
+            displayService.showTeamList = true;
             displayService.showTeamButton = false;
             $scope.teamMembers = data.data.data[1].rows.map(function(obj){
                 return {id: obj.id, username: obj.username};
@@ -144,15 +141,46 @@ app.controller('getUserTeamCtrl', function($scope, $http, sendData, displayServi
             console.log(error);
         }); 
     };
+
+    $scope.addTask = function() {
+        $http({
+            method:"POST",
+            url: "/tasks",
+            data: {task: $scope.task, team_member_id: $scope.member.id, team_id: sendData.userTeamId}
+        }).then(function successCallback(data){
+            console.log(data);
+        },
+        function errorCallback(error) {
+            console.log(error);
+        });
+    };
 });
 
+app.controller('tasksCtrl', function($http, $scope, sendData, $rootScope, displayService){
+    $scope.showTasks = function() {
+        return displayService.showTasks;
+    };    
 
+    $scope.getYourTasks = function() {
+        $http({
+            method:"GET",
+            url: "/tasks",
+            params: {team_id: sendData.userTeamId}
+        }).then(function successCallback(data){
+            $scope.tasksArray = data.data.rows;
+            console.log($scope.tasksArray);
+
+        },
+        function errorCallback(error) {
+            console.log(error);
+        });
+    };
+});
 
 app.service('sendData', function(){
-    this.userID = 0;
+    this.userId = 0;
     this.chosenTeam;
     this.userTeamId;
-    this.teamArray;
 });
 
 app.service('displayService', function(){
@@ -162,7 +190,8 @@ app.service('displayService', function(){
     this.showTeams = false;
     this.showUser = false;
     this.showTeamButton = false;
-    this.showTeam = false;
+    this.showTasks = false;
+    this.showTeamList = false;
 });
 
 

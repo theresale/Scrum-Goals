@@ -88,37 +88,37 @@ module.exports = (function() {
 		);
 	}
 
+	var saveTask = function(task, team_member_id, team_id, callback){
+		pool.query(
+			"INSERT INTO todo_list"+
+			" (task, team_member_id, team_id)"+
+			" VALUES ($1, $2, $3) RETURNING id;", [task, team_member_id, team_id], function(error,result){
+				if (error) return console.error(error);
+				callback(result);
+			}
+		);
+	}
 
-	// var createList = function(item,profile_id) {
+	var readTasks = function(team_id, callback){
+		pool.query(
+			"SELECT task, team_member_id FROM todo_list"+
+			" WHERE team_id = $1;", [team_id], function(error,result){
+				if (error) return console.error(error);
+				callback(result);
+			}
+		);
+	}
+
+	// var updateTasks = function(task, team_member_id, team_id, task_id, callback){
 	// 	pool.query(
-	// 		"INSERT INTO grocery_list" +
-	// 		" (item, profile_id)" +
-	// 		" VALUES ($1, $2);", [item, profile_id], function(error, result) {
+	// 		"UPDATE todo_list"+
+	// 		" SET task = $1, team_member_id = $2, team_id = $3"+
+	// 		" WHERE task_id = $4;", [task, team_member_id, team_id, task_id, callback], function(error,result){
 	// 			if (error) return console.error(error);
+	// 			callback(result);	
 	// 		}
 	// 	);
-	// }
-
-	// var updateList = function(item,profile_id) {
-	// 	//console.log(item);
-	// 	pool.query(
-	// 		"UPDATE grocery_list" +
-	// 		" SET item = $1" +
-	// 		" WHERE profile_id = $2;", [item, profile_id], function(error, result) {
-	// 			if (error) return console.error(error);
-	// 		}
-	// 	);
-	// }
-
-	// var readList = function(profile_id,callback) {
-	// 	pool.query(
-	// 		"SELECT * FROM grocery_list"+
-	// 		" WHERE profile_id=$1", [profile_id], function(error,result) {
-	// 			if (error) return console.error(error);
-	// 			callback(result);
-	// 		}
-	// 	);
-	// }
+	//}
 
 	 return {
 	 	saveUser: saveUser,
@@ -127,7 +127,10 @@ module.exports = (function() {
 	 	readYourTeam: readYourTeam,
 	 	readAllTeams: readAllTeams,
 	 	updateTeamId: updateTeamId,
-	 	readTeamMembers: readTeamMembers
+	 	readTeamMembers: readTeamMembers,
+	 	saveTask: saveTask,
+	 	readTasks: readTasks
+	 	// updateTasks: updateTasks
 	 };
 })();
 

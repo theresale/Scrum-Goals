@@ -54,4 +54,23 @@ app.get("/yourteam", function(request, response){
 	});
 });
 
+app.post("/tasks", function(request,response){
+	console.log(request);
+	databaseManager.saveTask(request.body.task, request.body.team_member_id, request.body.team_id, function(result){
+		return response.send(result);
+	});
+});
+
+app.get("/tasks", function(request, response){
+	databaseManager.readTasks(request.query.team_id, function(result){
+		return response.send(result);
+	});
+});
+
+// app.put("/users", function(request,response){
+// 	databaseManager.updateTasks(request.body.task, request.body.team_member_id, request.body.team_id, request.body.task_id, function(result){
+// 		return response.send(result);
+// 	});
+// });
+
 

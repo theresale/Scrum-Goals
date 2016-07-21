@@ -47,7 +47,7 @@
     <div class="row" ng-controller="teamListCtrl" ng-show="showTeams()">
             <div class="col-sm-offset-3 col-sm-6"> 
             <button ng-click="getTeams()" class="btn btn-default">1. Refresh Teams</button>
-                <select name="chosenTeam" id="chosenTeam" ng-model="chosenTeam">
+                <select class="form-control" name="chosenTeam" id="chosenTeam" ng-model="chosenTeam">
                     <option value="">2. CHOOSE A TEAM</option>
                     <option ng-repeat="team in teamArray" value="{{team.id}}">{{team.name}}</option>
                 </select>  
@@ -70,27 +70,36 @@
 
     <div class="row" ng-controller="getUserTeamCtrl" ng-show="showUser()">
         <div class="col-sm-offset-3 col-sm-6">
-            <h3 ng-model="teamName">{{teamName}}</h3>
+            <h2 ng-model="teamName">{{teamName}}</h2>
             <hr>
             
             <button ng-click="getYourTeam()" ng-show="showTeamButton()" class="btn btn-default">Your Team</button>
 
-            <div ng-model="teamMember" ng-show="showTeam()">
-                <!--
-                <select name="teamMembers" id="teamMembers" ng-model="teamMembers">
-                    <option ng-repeat="member in teamMembers">
-                        {{member.username}}
-                    </option>
-                </select>  
-                -->
-                <p>Choose someone from your team to add and delete tasks:</p>
-                <select ng-model="member" ng-options="member.username for member in teamMembers">
-                </select>  
+            <div ng-show="showTeamList()" ng-model="teamMembers">
+                <h3>Asign Task</h3>
+                <select form="addTask" class="form-control" ng-model="member" ng-options="member.username for member in teamMembers">
+                </select> 
+                <form ng-submit="submit()" id="addTask">
+                <input class="form-control" type="text" placeholder="Task" ng-model="task">
+                <input ng-click="addTask()" id="submit" class="btn btn-default" type="submit" value="Add">
+                </form>
+                <hr>
             </div>
-
         </div>
     </div>
 
+    <div ng-controller="tasksCtrl" class="form-group" ng-show="showTasks()">
+        <div class="col-sm-offset-3 col-sm-6">
+            <h3>Team Tasks</h3>
+            <table class="table table-striped">
+                <tr>
+                    <th>Task</th><th>Assigned To</th><th>Done</th></tr>
+                <tr ng-repeat="task in tasksArray | orderBy : 'team_member_id'">
+                    <td>{{task.task}}</td><td>{{task.team_member_id}}</td><td></td></tr>
+            </table>
+            <button ng-click="getYourTasks()" class="btn btn-default">Update Tasks</button>   
+        </div>
+    </div>       
 </div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
