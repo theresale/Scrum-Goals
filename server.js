@@ -67,8 +67,6 @@ app.get("/tasks", function(request, response){
 });
 
 app.delete("/tasks", function(request,response){
-	console.log(request);
-	console.log(request.query);
 	databaseManager.deleteTask(request.query.id, function(result){
 		return response.send(result);
 	});
