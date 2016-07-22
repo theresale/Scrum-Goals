@@ -101,18 +101,21 @@ module.exports = (function() {
 
 	var readTasks = function(team_id, callback){
 		pool.query(
-			"SELECT task, team_member_id FROM todo_list"+
-			" WHERE team_id = $1;", [team_id], function(error,result){
+			"SELECT task, todo_list.id, username"+
+			" FROM todo_list"+
+			" INNER JOIN team_member"+
+			" ON todo_list.team_member_id=team_member.id"+
+			" WHERE team_member.team_id = $1;", [team_id], function(error,result){
 				if (error) return console.error(error);
 				callback(result);
 			}
 		);
 	}
 
-	var deleteTask = function(task_id, callback){
+	var deleteTask = function(id, callback){
 		pool.query(
-			"DELETE todo_list"+
-			" WHERE task_id = $1;", [task_id], function(error,result){
+			"DELETE FROM todo_list"+
+			" WHERE id = $1;", [id], function(error,result){
 				if (error) return console.error(error);
 				callback(result);	
 			}

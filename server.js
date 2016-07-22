@@ -55,7 +55,6 @@ app.get("/yourteam", function(request, response){
 });
 
 app.post("/tasks", function(request,response){
-	console.log(request);
 	databaseManager.saveTask(request.body.task, request.body.team_member_id, request.body.team_id, function(result){
 		return response.send(result);
 	});
@@ -68,7 +67,9 @@ app.get("/tasks", function(request, response){
 });
 
 app.delete("/tasks", function(request,response){
-	databaseManager.deleteTask(request.query.task_id, function(result){
+	console.log(request);
+	console.log(request.query);
+	databaseManager.deleteTask(request.query.id, function(result){
 		return response.send(result);
 	});
 });

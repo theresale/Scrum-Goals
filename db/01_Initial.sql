@@ -1,4 +1,4 @@
-﻿DROP TABLE IF EXISTS team;
+﻿ DROP TABLE IF EXISTS team;
 DROP TABLE IF EXISTS team_member;
 DROP TABLE IF EXISTS todo_list;
 

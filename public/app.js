@@ -107,7 +107,7 @@ app.controller('loginCtrl', function($scope, $http, sendData, displayService) {
     };
 });
 
-app.controller('getUserTeamCtrl', function($scope, $http, sendData, displayService) {
+app.controller('getUserTeamCtrl', function($scope, $http, sendData, $rootScope, displayService) {
     $scope.showUser = function() {
         $scope.getYourTeam;
         return displayService.showUser;
@@ -148,7 +148,7 @@ app.controller('getUserTeamCtrl', function($scope, $http, sendData, displayServi
             url: "/tasks",
             data: {task: $scope.task, team_member_id: $scope.member.id, team_id: sendData.userTeamId}
         }).then(function successCallback(data){
-            console.log(data);
+            $rootScope.$emit("getYourTasks", {});
         },
         function errorCallback(error) {
             console.log(error);
@@ -159,7 +159,11 @@ app.controller('getUserTeamCtrl', function($scope, $http, sendData, displayServi
 app.controller('tasksCtrl', function($http, $scope, sendData, $rootScope, displayService){
     $scope.showTasks = function() {
         return displayService.showTasks;
-    };    
+    };
+
+    $rootScope.$on("getYourTasks", function(){
+           $scope.getYourTasks();
+    });    
 
     $scope.getYourTasks = function() {
         $http({
@@ -168,19 +172,27 @@ app.controller('tasksCtrl', function($http, $scope, sendData, $rootScope, displa
             params: {team_id: sendData.userTeamId}
         }).then(function successCallback(data){
             $scope.tasksArray = data.data.rows;
+            console.log(data.data.rows);
         },
         function errorCallback(error) {
             console.log(error);
         });
     };
 
+    $scope.checkBox = function(task) {
+        task.done = !task.done;
+    };
+
     $scope.removeTasks = function() {
-        angular.forEach($scope.task, function(x) {
-            if (x.done) {
+
+        angular.forEach($scope.tasksArray, function(task) {
+            console.log(task.done);
+            if (task.done) {
+            console.log(task.id);
                 $http({
                     method:"DELETE",
                     url: "/tasks",
-                    params: {id: $scope.task.id}
+                    params: {id: task.id}
                 }).then(function successCallback(data){
                     $scope.getYourTasks();
                 },
